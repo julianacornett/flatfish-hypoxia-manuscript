@@ -1,0 +1,153 @@
+---
+title: "ElkhornSloughDO"
+author: "Juliana Cornett"
+date: "1/10/2022"
+output: html_document
+---
+
+#Plot of DO in Elkhorn Slough
+
+#install packages
+
+```{r}
+#install.packages("tidyr")
+#install.packages("ggplot2")
+#install.packages("tidyverse")
+#install.packages("ggpubr")
+#install.packages("lubridate")
+#install.packages("scales")
+#install.packages("viridis")
+#install.packages("RColorBrewer")
+```
+
+#load libraries
+
+```{r}
+library(tidyr)
+library(ggplot2)
+library(tidyverse)
+library(ggpubr)
+library(lubridate)
+library(scales)
+library(viridis)
+library(RColorBrewer)
+```
+
+#read in csv files containing DO measurements from 5/1/31-8/31/21 at the 4 water quality sites in Elkhorn Slough (Vierra Mouth, South Marsh, North Marsh, and Azevedo Pond)
+
+```{r}
+Vierra <- read.csv("VierraMouth_DO_5.1.21_8.31.21.csv")
+
+South <- read.csv("SouthMarsh_DO_5.1.21_8.31.21.csv")
+
+North <- read.csv("NorthMarsh_DO_5.1.21_8.31.21.csv")
+
+Azevedo <- read.csv("AzevedoPond_DO_5.1.21_8.31.21.csv")
+```
+
+#combine into single dataframe
+
+```{r}
+AllES_DO <- rbind(Vierra, South, North, Azevedo)
+```
+
+#remove rows with NA
+
+```{r}
+ES_DO <- na.omit(AllES_DO)
+```
+
+#fix timestamp column
+#first change slashes in year of TimeStamp column to dashes with gsub
+
+```{r}
+ES_DO$TimeStamp <- gsub('/', '-', ES_DO$TimeStamp)
+ES_DO
+```
+
+#then convert time stamp into POSIXct format, specifying the format that the timestamp is currently in
+
+```{r}
+ES_DO$TimeStamp <- as.POSIXct(ES_DO$TimeStamp, format="%m-%d-%Y %H:%M")
+ES_DO
+```
+
+#plot to visualize across entire summer
+
+```{r}
+ggplot(ES_DO, aes(x = TimeStamp, y = DO_mgL, color = Site)) + 
+  theme_pubr() + 
+  geom_line() +
+  ylab("Dissolved Oxygen (mg/L)") + 
+  xlab("Date") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  theme(axis.title=element_text(size=18,face="bold")) +
+  theme(axis.text=element_text(size=10)) + 
+  theme(legend.text=element_text(size=12,face="bold")) +
+  theme(legend.title = element_blank()) 
+```
+
+#add month column
+
+```{r}
+ES_DO$Month <- as.numeric(format(ES_DO$TimeStamp, "%m"))
+ES_DO
+```
+
+#subset May data
+
+```{r}
+May_DO <- subset(ES_DO, Month==5)
+May_DO
+```
+
+#set my own color palette based on colors chosen from viridis palette
+
+```{r}
+palette_viridis <- c("#482677FF", "#2D7D8EFF", "#55C667FF","#FDE725FF")
+```
+
+#plot May only (Figure 1 in thesis)
+
+```{r}
+ggplot(May_DO, aes(x = TimeStamp, y = DO_mgL, color = Site)) + 
+  scale_color_manual(values = palette_v) +
+  theme_pubr() + 
+  geom_line() +
+  guides(colour = guide_legend(override.aes = list(size=3))) +
+  ylab("Dissolved Oxygen (mg/L)") + 
+  xlab("Date") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  theme(axis.title=element_text(size=14,face="bold")) +
+  theme(axis.text=element_text(size=10)) + 
+  theme(legend.text=element_text(size=10,face="bold")) +
+  theme(legend.title = element_blank()) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%b %d") + 
+  geom_hline(yintercept=8, linetype='dotted')
+```
+
+#subset from 12 pm on May 5th to 12 pm on May 6th
+
+```{r}
+May5_6_subset <- subset(May_DO, TimeStamp >= as.POSIXct('0021-05-05 12:00') & TimeStamp <=
+as.POSIXct('0021-05-06 12:00'))
+May5_6_subset
+```
+
+#plot May 6th data only (figure used in defense)
+
+```{r}
+ggplot(May5_6_subset, aes(x = TimeStamp, y = DO_mgL, color = Site)) + 
+  scale_color_manual(values = palette_v) +
+  theme_pubr() + 
+  geom_line() +
+  guides(colour = guide_legend(override.aes = list(size=3))) +
+  ylab("Dissolved Oxygen (mg/L)") + 
+  xlab("Time") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  theme(axis.title=element_text(size=14,face="bold")) +
+  theme(axis.text=element_text(size=10)) + 
+  theme(legend.text=element_text(size=10,face="bold")) +
+  theme(legend.title = element_blank()) +
+  geom_hline(yintercept=8, linetype='dotted')
+```

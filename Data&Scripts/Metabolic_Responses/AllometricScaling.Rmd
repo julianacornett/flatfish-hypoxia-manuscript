@@ -1,0 +1,46 @@
+---
+title: "AllometricScaling"
+author: "Juliana Cornett"
+date: "3/10/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#read in CSV file with weight and ambient metabolic rate data
+
+```{r}
+sole_AmbMet <- read.csv("Englishsole_Allometric.csv")
+```
+
+#LINEAR MODELS (used for Table 3 in thesis)
+
+#linear model function of weight (g) vs. ambient SMR 
+
+```{r}
+lm_scaleSMR <- lm(sole_AmbMet$AmbSMR ~ sole_AmbMet$Weight_g)
+print(summary(lm_scaleSMR))
+```
+
+#linear model function of weight (g) versus ambient MMR 
+
+```{r}
+lm_scaleMMR <- lm(sole_AmbMet$AmbMMR ~ sole_AmbMet$Weight_g)
+print(summary(lm_scaleMMR))
+```
+
+#linear model function of total length (cm) versus ambient SMR
+
+```{r}
+lm_scaleSMR_length <- lm(sole_AmbMet$AmbSMR ~ sole_AmbMet$Length_cm)
+print(summary(lm_scaleSMR_length))
+```
+
+#linear model function of total length (cm) versus ambient MMR
+
+```{r}
+lm_scaleMMR_length <- lm(sole_AmbMet$AmbMMR ~ sole_AmbMet$Length_cm)
+print(summary(lm_scaleMMR_length))
+```
