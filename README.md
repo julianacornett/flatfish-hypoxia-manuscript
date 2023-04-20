@@ -1,5 +1,5 @@
 # flatfish-hypoxia-manuscript
-This repository includes all data, lab protocols, and R scripts associated with the manuscript **"Hypoxia in nursery habitats impairs metabolic performance of juvenile flatfishes"** (*update title*) by Juliana Cornett, Scott Hamilton, and Cheryl Logan. This repository is organized into the following folders:
+This repository includes all data, lab protocols, and R scripts associated with the manuscript **"Physiological responses to hypoxia differ between co-occurring juvenile flatfishes"** by Juliana Cornett, Scott Hamilton, and Cheryl Logan. This repository is organized into the following folders:
 
 ## [Protocols](Protocols)
 
