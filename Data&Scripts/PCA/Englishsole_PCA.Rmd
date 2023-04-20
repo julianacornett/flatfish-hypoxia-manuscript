@@ -52,7 +52,7 @@ sole.pca <- prcomp(sole_na[,c(7:11)], center = TRUE,scale. = TRUE)
 summary(sole.pca)
 ```
 
-#plot relative contribution of variables to principle components (Figure 14 in thesis)
+#plot relative contribution of variables to principle components (Figure 6 in manuscript)
 
 ```{r}
 fviz_pca_var(sole.pca, col.var = "contrib", gradient.cols = c("#482677FF", "#20A387FF", "#FDE725FF"), 
@@ -63,7 +63,7 @@ fviz_pca_var(sole.pca, col.var = "contrib", gradient.cols = c("#482677FF", "#20A
   theme(axis.title=element_text(size=14,face="bold")) 
 ```
 
-#color individuals by DO (Figure 15 in thesis)
+#color individuals by DO (Figure 6 in manuscript)
 
 ```{r}
 #jpeg("Sole_indPCA.jpg", width = 7, height = 5, units="in", res=1200)
@@ -76,19 +76,6 @@ fviz_pca_ind(sole.pca, label="none", habillage=sole_na$DO, addEllipses=TRUE,
   scale_colour_viridis_d(option = "viridis") +
   scale_fill_viridis_d(option = "viridis")
 #dev.off() 
-```
-
-#plot with ellipses & variables arrows (figure used in defense)
-
-```{r}
-fviz_pca_biplot(sole.pca, label="var", repel = TRUE, alpha.ind=0, mean.point=FALSE, col.var = "black", habillage=sole_na$DO,
-               addEllipses=TRUE, ellipse.level=0.95, legend.title = "DO (mg/L)") + 
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-   labs(title = NULL, x = "Principal Component 1 (41.3%)", y = "Principal Component 2 (21.6%)") +
-  theme(axis.title=element_text(size=14,face="bold")) +
-  scale_colour_viridis_d(option = "viridis") +
-  scale_fill_viridis_d(option = "viridis")
 ```
 
 #PCA with scores
@@ -172,7 +159,7 @@ sole_vPC2_lm <- lm(sole_vPC2$varPC2 ~ sole_vPC2$DO)
 print(summary(sole_vPC2_lm))
 ```
 
-#combine plots with patchwork (Figure 16 in thesis)
+#combine plots with patchwork (Figure 7 in manuscript)
 
 ```{r}
 #Regression of PC scores on PC1 vs DO
