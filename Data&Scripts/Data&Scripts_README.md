@@ -26,19 +26,6 @@ _csv file including DO data from South Marsh water quality monitoring site from 
 
 _csv file including DO data from Vierra Mouth water quality monitoring site from summer 2021, including station name, timestamp, and DO (mg/L)._
 
-## [Compensatory_Mechanisms](Compensatory_Mechanisms)
-
-Data was collected by Juliana Cornett following protocols in the [Ventilation](/Protocols/Ventilation) and [Blood_Sampling](/Protocols/Blood_Sampling) folders. 
-
-* [**"Englishsole_AllVars.csv"**](Compensatory_Mechanisms/Englishsole_AllVars.csv)
-* [**"Speckledsanddab_AllVars.csv"**](Compensatory_Mechanisms/Speckledsanddab_AllVars.csv)
-
-_csv files for both species with fish ID, Species, DO (mg/L), weight (g), total length (cm), pre- and post-exposure ventilation rate (breaths/min), hematocrit (%), L-Lactate in muscle tissue (uM), superoxide dismutase (SOD) in gill tissue (U/mL), and hypoxia-inducibel factor-1a (HIF) in brain tissue (pg/mL)._
-
-* [**"CompensatoryPlots_LinearModelScatterplots.Rmd"**](Compensatory_Mechanisms/CompensatoryPlots_LinearModelScatterplots.Rmd) (Figure 3 in manuscript)
-
-_R script for linear models & scatterplots of DO versus compensatory mechanism (hematocrit or pre- to post-exposure change in ventilation rate), to test for relationship between DO level and compensatory mechanism measurements._
-
 ## [Metabolic_Responses](Metabolic_Responses)
 
 Data was collected by Juliana Cornett following protocols in the [Respirometry](/Protocols/Respirometry) folder. 
@@ -55,9 +42,22 @@ _R script for linear models of fish size, length (cm) and weight (g), versus pre
 
 _csv file including fish ID, DO (mg/L), and pre- and post-exposure MMR & SMR (mgO2/kg/hr)._
 
-* [**"MetabolicPlots_LinearModelScatterplots.Rmd"**](Metabolic_Responses/MetabolicPlots_LinearModelScatterplots.Rmd) (Figure 4 in manuscript)
+* [**"MetabolicPlots_LinearModelScatterplots.Rmd"**](Metabolic_Responses/MetabolicPlots_LinearModelScatterplots.Rmd) (Figure 3 in manuscript)
 
 _R script for linear models & scatterplots of DO versus pre-exposure, as well as pre- to post-exposure change, metabolic parameters (SMR, MMR, and aerobic scope in mgO2/kg/hr), to test for relationship between DO level and metabolic parameters._
+
+## [Compensatory_Mechanisms](Compensatory_Mechanisms)
+
+Data was collected by Juliana Cornett following protocols in the [Ventilation](/Protocols/Ventilation) and [Blood_Sampling](/Protocols/Blood_Sampling) folders. 
+
+* [**"Englishsole_AllVars.csv"**](Compensatory_Mechanisms/Englishsole_AllVars.csv)
+* [**"Speckledsanddab_AllVars.csv"**](Compensatory_Mechanisms/Speckledsanddab_AllVars.csv)
+
+_csv files for both species with fish ID, Species, DO (mg/L), weight (g), total length (cm), pre- and post-exposure ventilation rate (breaths/min), hematocrit (%), L-Lactate in muscle tissue (uM), superoxide dismutase (SOD) in gill tissue (U/mL), and hypoxia-inducibel factor-1a (HIF) in brain tissue (pg/mL)._
+
+* [**"CompensatoryPlots_LinearModelScatterplots.Rmd"**](Compensatory_Mechanisms/CompensatoryPlots_LinearModelScatterplots.Rmd) (Figure 4 in manuscript)
+
+_R script for linear models & scatterplots of DO versus compensatory mechanism (hematocrit or pre- to post-exposure change in ventilation rate), to test for relationship between DO level and compensatory mechanism measurements._
 
 ## [Biochemical_Changes](Biochemical_Changes)
 
