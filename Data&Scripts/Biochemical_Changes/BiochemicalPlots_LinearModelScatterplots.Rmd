@@ -75,7 +75,7 @@ sole_sod <- lm(soleBiochem$SOD ~ soleBiochem$DO)
 print(summary(sole_sod))
 ```
 
-#scatterplots combined with patchwork (Figure 12 in thesis)
+#scatterplots combined with patchwork (Figure 5 in manuscript)
 
 ```{r}
 sole_hif_scatter_p1 <- ggplot(soleBiochem, aes(x = DO, y = HIF)) +
@@ -133,7 +133,7 @@ dab_sod <- lm(dabBiochem$SOD ~ dabBiochem$DO)
 print(summary(dab_sod))
 ```
 
-#scatterplots combined with patchwork (Figure 13 in thesis)
+#scatterplots combined with patchwork (Figure 5 in manuscript)
 
 ```{r}
 dab_hif_scatter_p1 <- ggplot(dabBiochem, aes(x = DO, y = HIF)) +
