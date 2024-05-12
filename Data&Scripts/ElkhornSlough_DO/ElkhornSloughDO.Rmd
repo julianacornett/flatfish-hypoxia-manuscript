@@ -18,6 +18,7 @@ output: html_document
 #install.packages("scales")
 #install.packages("viridis")
 #install.packages("RColorBrewer")
+#install.packages("patchwork")
 ```
 
 #load libraries
@@ -31,6 +32,7 @@ library(lubridate)
 library(scales)
 library(viridis)
 library(RColorBrewer)
+library(patchwork)
 ```
 
 #read in csv files containing DO measurements from 5/1/31-8/31/21 at the 4 water quality sites in Elkhorn Slough (Vierra Mouth, South Marsh, North Marsh, and Azevedo Pond)
@@ -43,18 +45,30 @@ South <- read.csv("SouthMarsh_DO_5.1.21_8.31.21.csv")
 North <- read.csv("NorthMarsh_DO_5.1.21_8.31.21.csv")
 
 Azevedo <- read.csv("AzevedoPond_DO_5.1.21_8.31.21.csv")
+
+vm_temp <- read.csv("ELKVMWQ.csv") %>% dplyr::select(Station_Code, DateTimeStamp, Temp)
+
+sm_temp <- read.csv("ELKSMWQ.csv") %>% dplyr::select(Station_Code, DateTimeStamp, Temp)
+
+nm_temp <- read.csv("ELKNMWQ.csv") %>% dplyr::select(Station_Code, DateTimeStamp, Temp)
+
+ap_temp <- read.csv("ELKAPWQ.csv") %>% dplyr::select(Station_Code, DateTimeStamp, Temp)
 ```
 
 #combine into single dataframe
 
 ```{r}
 AllES_DO <- rbind(Vierra, South, North, Azevedo)
+
+All_Temp <- rbind(vm_temp, sm_temp, nm_temp, ap_temp)
 ```
 
 #remove rows with NA
 
 ```{r}
 ES_DO <- na.omit(AllES_DO)
+
+All_Temp <- na.omit(All_Temp)
 ```
 
 #fix timestamp column
@@ -63,13 +77,21 @@ ES_DO <- na.omit(AllES_DO)
 ```{r}
 ES_DO$TimeStamp <- gsub('/', '-', ES_DO$TimeStamp)
 ES_DO
+
+All_Temp$TimeStamp <- gsub('/', '-', All_Temp$DateTimeStamp)
+All_Temp
 ```
 
 #then convert time stamp into POSIXct format, specifying the format that the timestamp is currently in
 
 ```{r}
-ES_DO$TimeStamp <- as.POSIXct(ES_DO$TimeStamp, format="%m-%d-%Y %H:%M")
+ES_DO$TimeStamp <- as.POSIXct(ES_DO$TimeStamp, format="%m-%d-%y %H:%M")
+ES_DO$Date <- date(ES_DO$TimeStamp)
 ES_DO
+
+All_Temp$TimeStamp <- as.POSIXct(All_Temp$TimeStamp, format="%m-%d-%Y %H:%M")
+All_Temp$Date <- date(All_Temp$TimeStamp)
+All_Temp
 ```
 
 #plot to visualize across entire summer
@@ -110,12 +132,30 @@ palette_viridis <- c("#482677FF", "#2D7D8EFF", "#55C667FF","#FDE725FF")
 #plot May only (Figure 1 in manuscript)
 
 ```{r}
-ggplot(May_DO, aes(x = TimeStamp, y = DO_mgL, color = Site)) + 
-  scale_color_manual(values = palette_v) +
+es_do_may <- ggplot(May_DO, aes(x = TimeStamp, y = DO_mgL, color = Site)) + 
+  scale_color_manual(values = palette_viridis) +
   theme_pubr() + 
   geom_line() +
   guides(colour = guide_legend(override.aes = list(size=3))) +
   ylab("Dissolved Oxygen (mg/L)") + 
+  xlab("") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  theme(axis.title=element_text(size=14,face="bold")) +
+  theme(axis.text=element_text(size=10)) + 
+  theme(legend.text=element_text(size=10,face="bold")) +
+  theme(legend.title = element_blank()) +
+  scale_x_datetime(date_breaks = "1 day", date_labels = "%b %d") + 
+  geom_hline(yintercept=8, linetype='dotted') +
+  geom_text(data=May_DO[1, ], label="A", vjust=-12, color = "black", size = 5, check_overlap = TRUE) +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+es_do_may
+
+es_temp_may <- ggplot(All_Temp, aes(x = TimeStamp, y = Temp, color = Station_Code)) + 
+  scale_color_manual(values = palette_viridis) +
+  theme_pubr() + 
+  geom_line() +
+  guides(colour = guide_legend(override.aes = list(size=3))) +
+  ylab("Temperature (\u00B0C)") + 
   xlab("Date") + 
   theme(axis.text.x = element_text(angle = 90)) + 
   theme(axis.title=element_text(size=14,face="bold")) +
@@ -123,5 +163,17 @@ ggplot(May_DO, aes(x = TimeStamp, y = DO_mgL, color = Site)) +
   theme(legend.text=element_text(size=10,face="bold")) +
   theme(legend.title = element_blank()) +
   scale_x_datetime(date_breaks = "1 day", date_labels = "%b %d") + 
-  geom_hline(yintercept=8, linetype='dotted')
+  geom_hline(yintercept=12, linetype='dotted') +
+  geom_text(data=All_Temp[1, ], label="B", vjust=-21, color = "black", size = 5, check_overlap = TRUE)+
+  theme(legend.position = "none")
+es_temp_may
 ```
+
+combined jpeg
+
+```{r}
+jpeg("ElkhornSlough_TempDO.jpeg", width = 8, height = 10, units = "in", res = 600)
+es_do_may /
+  es_temp_may
+```
+
