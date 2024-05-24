@@ -51,6 +51,11 @@ sole_scope$MMRChange <- (sole_scope$HypMMR - sole_scope$AmbMMR)
 sole_scope$SMRChange <- (sole_scope$HypSMR - sole_scope$AmbSMR)
 ```
 
+```{r}
+sole_scope_grouped <- sole_scope %>% group_by(DO_mgL) %>% summarise(HypMMRAvg = mean(HypMMR, na.rm = TRUE), HypSMRAvg = mean(HypSMR, na.rm = TRUE), HypScopeAvg = mean(HypScope, na.rm = TRUE))
+sole_scope_grouped
+```
+
 #linear models
 
 #post SMR
