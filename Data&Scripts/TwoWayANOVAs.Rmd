@@ -1,0 +1,68 @@
+---
+title: "Two-Way ANOVAs"
+author: "Juliana Cornett"
+date: "1/4/2022"
+output: html_document
+---
+
+#install packages
+
+```{r}
+#install.packages("tidyverse")
+#install.packages("rstatix")
+```
+
+#load libraries
+
+```{r}
+library(tidyverse)
+library(rstatix)
+```
+
+#DATA PREPARATION 
+
+#read in csv file containing all measurements for each species
+
+```{r}
+soleAll <- read.csv("Compensatory_Mechanisms/Englishsole_AllVars.csv")
+
+dabAll <- read.csv("Compensatory_Mechanisms/Speckledsanddab_AllVars.csv")
+```
+
+#combined
+
+```{r}
+combined_all <- rbind(soleAll, dabAll) 
+```
+
+#two-way ANOVAs
+
+```{r}
+#hematocrit
+hct_aov <- aov(Hct ~ Species * as.factor(DO), data = combined_all)
+summary(hct_aov)
+eta_squared(hct_aov)
+
+#ventilation
+vent_aov <- aov(HypVent ~ Species * as.factor(DO), data = combined_all)
+summary(vent_aov)
+eta_squared(vent_aov)
+
+#HIF
+hif_aov <- aov(HIF ~ Species * as.factor(DO), data = combined_all)
+summary(hif_aov)
+eta_squared(hif_aov)
+
+#lactate
+lactate_aov <- aov(Lactate ~ Species * as.factor(DO), data = combined_all)
+summary(lactate_aov)
+eta_squared(lactate_aov)
+
+#SOD
+sod_aov <- aov(SOD ~ Species * as.factor(DO), data = combined_all)
+summary(sod_aov)
+eta_squared(sod_aov)
+```
+
+
+
