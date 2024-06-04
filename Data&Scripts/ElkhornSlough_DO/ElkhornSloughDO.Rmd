@@ -92,6 +92,8 @@ ES_DO
 All_Temp$TimeStamp <- as.POSIXct(All_Temp$TimeStamp, format="%m-%d-%Y %H:%M")
 All_Temp$Date <- date(All_Temp$TimeStamp)
 All_Temp
+
+ES_Combined <- merge(ES_DO, All_Temp)
 ```
 
 #plot to visualize across entire summer
@@ -167,6 +169,17 @@ es_temp_may <- ggplot(All_Temp, aes(x = TimeStamp, y = Temp, color = Station_Cod
   geom_text(data=All_Temp[1, ], label="B", vjust=-21, color = "black", size = 5, check_overlap = TRUE)+
   theme(legend.position = "none")
 es_temp_may
+
+es_correlation <- ggplot(ES_Combined, aes(x = Temp, y = DO_mgL, color = Station_Code)) + 
+  scale_color_manual(values = palette_viridis) +
+  geom_point(alpha = 0.25) +
+  geom_smooth(method = "lm", se = FALSE) +
+  stat_cor(aes(label = paste(..rr.label.., ..p.label.., sep = "*`,`~")), size = 3, label.x = 5) +
+  theme_pubr() +
+  ylab("Dissolved Oxygen (mg/L)") + 
+  xlab("Temperature (\u00B0C)") +
+  geom_text(data=ES_Combined[1, ], label="C", vjust=-21, color = "black", size = 5, check_overlap = TRUE) 
+es_correlation
 ```
 
 combined jpeg
